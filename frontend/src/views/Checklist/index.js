@@ -199,7 +199,7 @@ const Checklist = ({ classes, history }) => {
         <Button onClick={newItem}>Create new</Button>
         <Divider />
         <List>
-          {items.map(item => (
+          {items && items.map(item => (
             <ListItem button key={item.topic} onClick={() => expandItem(item)}>
               {item.id == editItem.id && (
                 <>
