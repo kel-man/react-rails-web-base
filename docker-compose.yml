@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  web:
+    build:
+      context: ./web
+    volumes:
+      - ./web:/usr/src/app/
+    ports:
+      - 3003:3003
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_HOST="postgres"
+      - DATABASE_USER="postgres"
+      - PGHOST="postgres"
+
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - ${PWD}/frontend/config:/usr/src/app/config
+      - ${PWD}/frontend/src:/usr/src/app/src
+      - ${PWD}/frontend/public:/usr/src/app/public
+      - ${PWD}/frontend/start.sh:/usr/src/app/start.sh
+      - ${PWD}/frontend/package-lock.json:/usr/src/app/package-lock.json
+      - ${PWD}/frontend/package.json:/usr/src/app/package.json
+      - ${PWD}/frontend/scripts:/usr/src/app/scripts
+      - ${PWD}/web/static:/usr/src/web/static
+    ports:
+      - 3000:3000
+      - 3001:3001
+
+  postgres:
+    image: postgres:12.0
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432
+
